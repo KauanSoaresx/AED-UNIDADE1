@@ -1,0 +1,93 @@
+public abstract class Cliente {
+private String nome;
+private String endereco;
+private String fone;
+private int codigo;
+public Cliente(){
+}
+public Cliente (String n, String e, String f){
+nome=n;
+endereco= e;
+fone=f;
+}
+public void setNome(String n){
+nome=n;
+}
+public String getNome(){
+return nome;
+}
+public void setEndereco(String n){
+endereco=n;
+}
+public String getEndereco(){
+return endereco;
+}
+public void setFone(String n){
+fone=n;
+}
+public String getFone(){
+return fone;
+}
+
+public void setCodigo(int c){
+codigo = c;
+}
+public int getCodigo(){
+return codigo;
+}
+public abstract String getTipo();
+public String toString(){
+String res;
+res = &quot;Nome: &quot; + nome +&quot;\nEndereco: &quot; + endereco +&quot;\nTelefone: &quot;+fone;
+return res;
+}
+}
+public class PessoaFisica extends Cliente{
+private String cpf;
+public PessoaFisica(){
+super();
+}
+public PessoaFisica(String n, String e, String f, String c){
+super(n,e,f);
+setCPF(c);
+}
+public void setCPF(String c){
+cpf = c;
+}
+public void getCPF(){
+return cpf;
+}
+public String toString(){
+String res;
+res = super.toString() + &quot;\nCPF: &quot;+cpf;
+return res;
+}
+public String getTipo(){
+return &quot;Pessoa Fisica&quot;;
+}
+
+}
+public class PessoaJuridica extends Cliente{
+private String cnpj;
+public PessoaJuridica(){
+super();
+}
+public PessoaJuridica(String n, String e, String f, String c){
+super(n,e,f);
+setCNPJ(c);
+}
+public void setCNPJ(String c){
+cnpj = c;
+}
+public void getCNPJ(){
+return cnpj;
+}
+public String toString(){
+String res;
+res = super.toString() + &quot;\nCNPJ: &quot;+cnpj;
+return res;
+}
+public String getTipo(){
+return &quot;Pessoa Juridica&quot;;
+}
+}
