@@ -1,0 +1,58 @@
+public class TesteException {
+public static void main(String[] args) {
+int [] vetor = new int[3];
+try{
+for(int i=0; i&lt;4;i++){
+vetor[i]=i;
+System.out.println(vetor[i]); }
+
+} catch (Exception ex){
+System.out.print(&quot;Indice invalido&quot;); }
+
+}
+}
+
+class SaldoInsuficienteException extends Exception {
+private double saldo;
+private String numero;
+public SaldoInsuficienteException (doubel saldo, String numero){
+super(“Saldo Insuficiente”);
+this.saldo = saldo;
+this.numero = numero;
+}
+public double getSaldo(){
+return saldo;
+}
+... }
+7 – Declarar e lançar a exceção SaldoInsuficienteException nos métodos debitar e transferir
+public void debitar (double valor) throws SaldoInsuficienteException {
+if (valor &lt;= saldo) {
+saldo = saldo –valor;
+}
+else {
+SaldoInsuficienteException ex;
+ex = new SaldoInsuficienteException ();
+throw ex;
+}
+}
+
+8 – Alterar a classe TesteException para tratar a exceção SaldoInsuficienteException.
+public class TesteException {
+public static void main(String[] args) {
+Conta [] contas= new Conta[3];
+Conta c1, c2;
+Cliente cli = new PessoaFisica(&quot;Joao&quot;, &quot;Rua A&quot;, &quot;422-000&quot;,&quot;9876543&quot;);
+c1 = new Conta (cli, &quot;1234-6&quot;, 200.00);
+c2 = new Conta (cli, &quot;3219-0&quot;, 170.00);
+try{ c1.transferir(c2,100.00);
+for(int i=0; i&lt;4;i++){
+contas [i]=c1; }
+
+}catch (SaldoInsuficienteException sie){
+System.out.println(sie.getMessage());
+System.out.print(&quot;Conta/Saldo: &quot;);
+System.out.print(sie.getNumero() + &quot;/&quot;+ sie.getSaldo());
+} catch (Exception ex){
+System.out.print(&quot;Indice invalido&quot;);}
+
+} }
