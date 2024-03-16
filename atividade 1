@@ -1,0 +1,85 @@
+public class Exemplo1 {
+static public void main (String args[]) {
+System.out.println (“Primeiro Exemplo Java”);
+}
+}
+
+import javax.swing.JOptionPane;
+public class Nota {
+public static void main (String arg[]){
+String nota;
+double n1, n2, n3, media;
+nota = JOptionPane.showInputDialog(&quot;Digite a primeira nota&quot;);
+n1 = Double.parseDouble(nota);
+nota = JOptionPane.showInputDialog(&quot;Digite a segunda nota&quot;);
+n2 = Double.parseDouble(nota);
+nota = JOptionPane.showInputDialog(&quot;Digite a terceira nota&quot;);
+n3 = Double.parseDouble(nota);
+media = (n1+n2+n3)/3;
+JOptionPane.showMessageDialog(null, “A media é “ + media, “Resultado”,
+
+JOptionPane.PLAIN_MESSAGE);
+System.exit(0);
+}
+}
+
+
+
+public class Aluno{
+private String nome;
+private String matricula;
+private String dataNascimento;
+private String CPF;
+public void setNome(String
+nomeAluno){
+
+nome = nomeAluno;
+}
+public String getNome (){
+return nome;
+}
+}
+//TesteAluno.java
+
+public class TesteAluno{
+public static void main (String
+arg[]){
+
+Aluno a1, a2;
+a1 = new Aluno();
+a2= new Aluno();
+a1.setNome(&quot;Fulano&quot;);
+a2.setNome(&quot;ciclano&quot;);
+System.out.println(&quot;Aluno
+
+1 &quot; + a1.getNome());
+
+System.out.println (&quot;Aluno2 &quot; + a2.getNome());
+}
+}
+
+import javax.swing.JOptionPane;
+public class TesteAluno{
+public static void main (String arg[]){
+Aluno a1, a2;
+a1 = new Aluno();
+String nomeAluno, matriculaAluno, cpfAluno, dataNascimento;
+nomeAluno = JOptionPane.showInputDialog(&quot;Digite o nome do aluno&quot;);
+matriculaAluno = JOptionPane.showInputDialog(&quot;Digite a matricula do aluno&quot;);
+
+cpfAluno = JOptionPane.showInputDialog(&quot;Digite o CPF do aluno&quot;);
+dataNascimento = JOptionPane.showInputDialog(&quot;Digite a data de
+
+nascimento do aluno&quot;);
+
+a1.setNome(nomeAluno);
+a1.setMatricula(matriculaAluno);
+a1.setCPF(cpfAluno);
+a1.setDataNascimento(dataNascimento);
+JOptionPane.showMessageDialog(null, &quot;Nome: &quot; + a1.getNome() + &quot;\n&quot;
++ &quot;Maticula: &quot; + a1.getMatricula() + &quot;\n&quot;
++ &quot;CPF: &quot; + a1.getCPF() + &quot;\n&quot;
++ &quot;Data de nascimento: &quot; + a1.getDataNascimento(),
+&quot;Dados de aluno&quot;, JOptionPane.PLAIN_MESSAGE);
+}
+}
