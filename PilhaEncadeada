@@ -1,0 +1,319 @@
+public  class PilhaEncadeada implements Pilha{
+	private ListaEncadeada lista;
+	private int count;
+			 
+	public PilhaEncadeada() {
+		lista=new ListaEncadeada();
+		count = 0;
+	}
+
+	@Override
+	public void fazVazia() {
+		lista.fazVazia();
+		count=0;
+	}
+
+	@Override
+	public boolean estaVazia() {
+		return count == 0 ; 
+		
+	}
+
+	@Override
+	public Object getTop() throws ContainerVazioException {
+		if (count == 0)
+			throw new ContainerVazioException();
+		return lista.getPrimeiro();	
+		
+	}
+
+	@Override
+	public void push(Object item) {
+		lista.inserirInicio(item);
+		count++;
+	}
+
+	@Override
+	public Object pop() throws ContainerVazioException {
+		if(count == 0)
+			throw new ContainerVazioException();
+		Object result = lista.getPrimeiro();
+		lista.extrair(result);
+		count--;
+		return result;
+	
+}
+		
+	@Override
+    public void print() {
+        if (estaVazia()) {
+            System.out.println("A pilha está vazia.");
+            return;
+        }
+
+        System.out.print("Pilha: ");
+        Object[] elementos = lista.getElementos();
+        for (int i = 0; i < elementos.length; i++) {
+            System.out.print(elementos[i] + " ");
+        }
+        System.out.println();
+    }
+	
+	
+	public static void main(String[] args) throws ContainerVazioException {
+        PilhaEncadeada pilha = new PilhaEncadeada();
+        pilha.push(1);
+        pilha.push(14);
+        pilha.push(32);
+        pilha.push(27);
+        pilha.push(89);
+
+        System.out.println("Lista inicial:");
+        pilha.print();
+
+        Object removedItem = null;
+        if (!pilha.estaVazia()) {
+            removedItem = pilha.pop();
+            System.out.println("\nElemento removido: " + removedItem);
+            System.out.println("Pilha após remoções:");
+            pilha.print();
+        } else {
+            System.out.println("Erro: A pilha está vazia.");
+        }
+
+        
+        Object top = null;
+        if (!pilha.estaVazia()) {
+            top = pilha.getTop();
+            System.out.println("\nTopo da Pilha: " + top);
+        } else {
+            System.out.println("Erro: A pilha está vazia.");
+        }
+    }
+	
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public interface Pilha {
+	void fazVazia();
+	boolean estaVazia();
+	Object getTop() throws ContainerVazioException;
+	void push(Object item);
+	Object pop() throws ContainerVazioException;
+	void print();
+    
+}
+
+
+
+public class ContainerVazioException extends Exception {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+/* A lista ligada deve conter as variaveis head e tail com o ultimo elemento (tail) apontando pra null
+ *  Utilizar o codigo apresentado nos slides da aula.
+Criar uma classe teste para testar a lista ligada. 
+1 - Criar uma lista
+2 - adicionar elementos na lista (esses elementos podem ser inteiros ou strings)
+3 - imprimir os elementos da lista.
+Testem diversas formas de inserção na lista, como inserir no inicio e inserir no final da 
+lista em diferentes ordens.
+*/
+
+    public class ListaEncadeada {
+        private Element head;
+        private Element tail;
+        private int size=0;
+        
+        public void fazVazia () {
+		}
+
+        public Element getHead() {
+			return null;
+		}
+
+        public Element getTail() {
+			return null;
+		}
+
+        public boolean estaVazia() {
+			return false;
+		}
+
+        public Object getPrimeiro() {
+			return head;
+		}
+
+        public Object getUltimo() {
+			return tail;
+        	
+        }
+
+        public void inserirInicio (Object item) {
+		}
+
+        public void inserirFim (Object item) {
+		}
+
+        public void extrair (Object item) {
+        	
+		}
+
+        public static class Element {
+            Object data;
+            Element next;
+
+            Element(Object d, Element n) {
+                data = d;
+                next = n;
+            }
+
+            public Object getData() {
+                return data;
+            }
+
+            public Element getNext() {
+                return next;
+            }
+        }
+
+        public void add(Object data) {
+            if (tail == null) {
+                head = tail = new Element(data, null);
+            } else {
+                tail.next = new Element(data, null);
+                tail = tail.next;
+            }
+            size++;
+        }
+
+        public void addAt(int index, Object data) {
+            if (index < 0 || index > size) {
+                throw new IndexOutOfBoundsException("Index out of bounds");
+            }
+            if (index == 0) {
+                // Adiciona no início
+                head = new Element(data, head);
+                if (tail == null) {
+                    tail = head;
+                }
+            } else if (index == size) {
+                add(data);
+            } 
+            else {
+                Element current = head;
+                for (int i = 0; i < index - 1; i++) {
+                    current = current.next;
+                }
+                current.next = new Element(data, current.next);
+                size++;
+            }
+        }
+
+  
+
+        public void removeAt(int index) {
+            if (index < 0 || index >= size) {
+                throw new IndexOutOfBoundsException("Index out of bounds");
+            }
+            if (index == 0) {
+                head = head.next;
+                if (head == null) {
+                    tail = null;
+                }
+            } else {
+                Element current = head;
+                for (int i = 0; i < index - 1; i++) {
+                    current = current.next;
+                }
+                current.next = current.next.next;
+                if (current.next == null) {
+                    tail = current;
+                }
+            }
+            size--;
+        }
+
+
+        public void print() {
+            Element current = head;
+            while (current != null) {
+                System.out.println(current.data);
+                current = current.next;
+            }
+        }
+
+        public Object[] getElementos() {
+            if (estaVazia())
+                return new Object[0];
+
+            List<Object> elementos = new ArrayList<>();
+            Element current = head;
+            while (current != null) {
+                elementos.add(current.getData());
+                current = current.getNext();
+            }
+            return elementos.toArray();
+        }
+
+    public static void main(String[] args) {
+        ListaEncadeada lista = new ListaEncadeada();
+        lista.add(1);
+        lista.add(14);
+        lista.add(32);
+        lista.add(27);
+        lista.add(89);
+
+        System.out.println("Lista inicial:");
+        lista.print();
+
+ 
+        lista.removeAt(2);
+        System.out.println("\nLista após remoções:");
+        lista.print();
+        
+        lista.addAt(2,34);
+        System.out.println("\nLista após adições:");
+        lista.print();
+    }
+
+   
+}
+
+
