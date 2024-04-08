@@ -1,0 +1,113 @@
+public class ListaEncadeada {
+        private Element head;
+        private Element tail;
+        private int size=0;
+
+        public static class Element {
+            Object data;
+            Element next;
+
+            Element(Object d, Element n) {
+                data = d;
+                next = n;
+            }
+
+            public Object getData() {
+                return data;
+            }
+
+            public Element getNext() {
+                return next;
+            }
+        }
+
+        public void add(Object data) {
+            if (tail == null) {
+                head = tail = new Element(data, null);
+            } else {
+                tail.next = new Element(data, null);
+                tail = tail.next;
+            }
+            size++;
+        }
+
+        public void addAt(int index, Object data) {
+            if (index < 0 || index > size) {
+                throw new IndexOutOfBoundsException("Index out of bounds");
+            }
+            if (index == 0) {
+                // Adiciona no início
+                head = new Element(data, head);
+                if (tail == null) {
+                    tail = head;
+                }
+            } else if (index == size) {
+                add(data);
+            } 
+            else {
+                Element current = head;
+                for (int i = 0; i < index - 1; i++) {
+                    current = current.next;
+                }
+                current.next = new Element(data, current.next);
+                size++;
+            }
+        }
+
+  
+
+        public void removeAt(int index) {
+            if (index < 0 || index >= size) {
+                throw new IndexOutOfBoundsException("Index out of bounds");
+            }
+            if (index == 0) {
+                head = head.next;
+                if (head == null) {
+                    tail = null;
+                }
+            } else {
+                Element current = head;
+                for (int i = 0; i < index - 1; i++) {
+                    current = current.next;
+                }
+                current.next = current.next.next;
+                if (current.next == null) {
+                    tail = current;
+                }
+            }
+            size--;
+        }
+
+
+        public void printList() {
+            Element current = head;
+            while (current != null) {
+                System.out.println(current.data);
+                current = current.next;
+            }
+        }
+
+       
+
+    public static void main(String[] args) {
+        ListaEncadeada lista = new ListaEncadeada();
+        lista.add(1);
+        lista.add(14);
+        lista.add(32);
+        lista.add(27);
+        lista.add(89);
+
+        System.out.println("Lista inicial:");
+        lista.printList();
+
+ 
+        lista.removeAt(2);
+        System.out.println("\nLista após remoções:");
+        lista.printList();
+        
+        lista.addAt(2,34);
+        System.out.println("\nLista após adições:");
+        lista.printList();
+    }
+}
+
