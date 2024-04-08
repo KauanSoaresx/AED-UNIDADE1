@@ -1,0 +1,132 @@
+/*Os tipos genéricos em Java, introduzidos no Java 5, permitem a definição de classes, interfaces 
+ * e métodos onde o tipo de dados com que eles operam é especificado como um parâmetro. 
+ * Isso proporciona uma maneira de reutilizar o mesmo código com diferentes tipos de entrada,
+melhorando a segurança do tipo em tempo de compilação e reduzindo a necessidade de conversões de tipo.
+ Exemplo inicial de como seria a nossa lista. T é o nosso tipo genérico.
+ */
+
+public class ListaDuplamente<T> {
+    private Element<T> head;
+    private Element<T> tail;
+    
+    public class Element<T> {
+        T data;
+        Element<T> next, prev;
+        
+        Element(T d, Element<T> p, Element<T> n) {
+            data = d;
+            prev = p;
+            next = n;
+        }
+    }
+
+    public void inserirInicio(T item) {
+        Element<T> temp = new Element<T>(item, null, head);
+        if (head == null) {
+            tail = temp;
+        } else {
+            head.prev = temp;
+        }
+        head = temp;
+    }
+
+    public void inserirFim(T item) {
+        Element<T> temp = new Element<T>(item, tail, null);
+        if (head == null) {
+            head = temp;
+        } else {
+            tail.next = temp;
+        }
+        tail = temp;
+    }
+    
+    public void remover(T item) throws ObjetoNaoEncontradoException {
+        Element<T> ptr = head;
+        while (ptr != null && !ptr.data.equals(item)) {
+            ptr = ptr.next;
+        }
+        if (ptr == null) {
+            throw new ObjetoNaoEncontradoException();
+        }
+        if (ptr == head) {
+            head = ptr.next;
+            if (head != null) {
+                head.prev = null;
+            }
+        }
+        if (ptr == tail) {
+            tail = ptr.prev;
+            if (tail != null) {
+                tail.next = null;
+            }
+        }
+        if (ptr.prev != null) {
+            ptr.prev.next = ptr.next;
+        }
+        if (ptr.next != null) {
+            ptr.next.prev = ptr.prev;
+        }
+    }
+    
+    public void inserirDepois(Element<T> ref, T item) {
+        if (ref == null) {
+            throw new IllegalArgumentException("Referência nula.");
+        }
+        Element<T> temp = new Element<T>(item, ref, ref.next);
+        ref.next = temp;
+        if (temp.next != null) {
+            temp.next.prev = temp;
+        }
+        if (tail == ref) {
+            tail = temp;
+        }
+    }
+
+    public void inserirAntes(Element<T> ref, T item) {
+        if (ref == null) {
+            throw new IllegalArgumentException("Referência nula.");
+        }
+        Element<T> temp = new Element<T>(item, ref.prev, ref);
+        ref.prev = temp;
+        if (temp.prev != null) {
+            temp.prev.next = temp;
+        }
+        if (head == ref) {
+            head = temp;
+        }
+    }
+
+    public static void main(String[] args) {
+        ListaDuplamente<String> lista = new ListaDuplamente<>();
+        lista.inserirInicio("A");
+        lista.inserirFim("B");
+        lista.inserirFim("C");
+        lista.inserirDepois(lista.head, "D");
+        lista.inserirAntes(lista.tail, "E");
+
+        Element<String> current = lista.head;
+        while (current != null) {
+            System.out.println(current.data);
+            current = current.next;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+public class ObjetoNaoEncontradoException extends Exception {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+}
