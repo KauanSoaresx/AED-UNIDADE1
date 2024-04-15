@@ -1,0 +1,311 @@
+public class Lista<T> {
+	private No<T> head;
+	private No<T> tail;
+	private int tamanho = 0;
+
+	private final int NAOENCONTRADO = -1;
+
+	public int getTamanho() {
+		return tamanho;
+	}
+
+	public void fazVazia() {
+		this.head = null;
+		this.tail = null;
+		this.tamanho = 0;
+	}
+
+	public void extrairElemento(T elemento) {
+		No<T> ptr = head;
+		No<T> prevPtr = null;
+		
+		while (ptr != null && !(elemento.equals(ptr.getElemento()))) {
+			prevPtr = ptr;
+			ptr = ptr.getNext();
+		}
+		if (ptr.getElemento().equals(null)) {
+			throw new IllegalArgumentException("Elemento nao encontrado");
+		}
+		if (ptr.getElemento().equals(head.getElemento())) {
+			head = ptr.getNext();
+		} else {
+			prevPtr.setNext(prevPtr.getNext());
+		}
+		if (ptr.getElemento().equals(tail.getElemento())) {
+			tail = prevPtr;
+		}
+	}
+	
+	public T getPrimeiro() {
+		return head.getElemento();
+	}
+	
+	public void removePrimeiro() {
+	    if (head == null) {
+	        throw new IllegalArgumentException("A lista está vazia");
+	    }
+	    head = head.getNext();
+	}
+	
+	public boolean estaVazia() {
+		return this.head == null;
+	}
+
+	public void imprimirLista() {
+		if (this.estaVazia()) {
+			System.out.println("Lista Vazia");
+		} else {
+			for (No<T> percorre = this.head; percorre != null; percorre = percorre.getNext()) {
+				System.out.print(percorre.getElemento() + " ");
+			}
+			System.out.println();
+		}
+	}
+
+	public void inserirInicio(T elemento) {
+		No<T> celula = new No<T>(elemento);
+		if (head == null) {
+			this.head = celula;
+			this.tail = celula;
+		}
+		celula.setNext(head.getNext());
+		this.head = celula;
+		tamanho++;
+	}
+
+	public void inserirFim(T elemento) {
+		No<T> celula = new No<T>(elemento);
+		if (head == null) {
+			this.head = celula;
+		} else {
+			this.tail.setNext(celula);
+		}
+		this.tail = celula;
+		tamanho++;
+	}
+
+	public T busca(int posicao) {
+
+		if (!(posicao > 0 && posicao <= this.tamanho)) {
+			throw new IllegalArgumentException("Posicao nao existe");
+		}
+
+		No<T> atual = this.head;
+
+		for (int i = 0; i < posicao; i++) {
+			atual = atual.getNext();
+		}
+		if (atual == null) {
+			throw new IllegalArgumentException("Posicao nao existe");
+		}
+		return atual.getElemento();
+	}
+
+	public int busca(T elemento) {
+		No<T> atual = this.head;
+		int posicao = 1;
+
+		while (atual != null) {
+			if (atual.getElemento().equals(elemento)) {
+				return posicao;
+			}
+			atual = atual.getNext();
+			posicao++;
+		}
+		return NAOENCONTRADO;
+	}
+	
+	private No<T> buscaNo(int posicao) {
+
+        if (!(posicao >= 0 && posicao <= this.tamanho)) {
+            throw new IllegalArgumentException("NAO_EXISTE");
+        }
+
+        No<T> noAtual = this.head;
+        for (int i = 1; i < posicao; i++) {
+            noAtual = noAtual.getNext();
+        }
+
+        return noAtual;
+    }
+	
+	public void adiciona(int posicao, T elemento) {
+		
+		if(!(posicao>=0 || posicao > this.tamanho)) {
+			throw new IllegalArgumentException("Posicao invalida");
+		}
+		
+		if(this.estaVazia()||posicao==0) {
+			this.inserirInicio(elemento);
+		} else if(this.tamanho == posicao) {
+			this.inserirFim(elemento);
+		} else {
+			No<T> anterior = buscaNo(posicao);
+			No<T> proximo = anterior.getNext();
+			No<T> novo = new No<T>(elemento);
+			novo.setNext(proximo);
+			anterior.setNext(novo);
+			this.tamanho++;
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "Lista [head=" + head + "]";
+	}
+
+}
+
+
+
+
+
+
+
+public class No<T> {
+	private T elemento;
+	private No<T> next;
+	
+	
+	
+	public No() {
+		
+	}
+	
+	public No(T elemento, No<T> next) {
+		this.elemento = elemento;
+		this.next = next;
+	}
+
+	public No(T elemento) {
+		this.elemento = elemento;
+		next = null;
+	}
+	
+	public T getElemento() {
+		return elemento;
+	}
+	
+	public void setElemento(T elemento) {
+		this.elemento = elemento;
+	}
+	
+	public No<T> getNext() {
+		return next;
+	}
+	
+	public void setNext(No<T> next) {
+		this.next = next;
+	}
+
+	@Override
+	public String toString() {
+		return "No [elemento=" + elemento + ", next=" + next + "]";
+	}
+	
+	
+	
+	
+}
+
+
+
+
+
+
+
+
+public class FilaLista<T> {
+	private Lista<T> lista;
+	private int count;
+	
+	public FilaLista() {
+		lista = new Lista<T>();
+		count = 0;
+	}
+	public void fazVazia() {
+		lista.fazVazia();
+		count=0;
+	}
+
+	public boolean estaVazia() {
+		return count==0;
+	}
+	
+	public T getPrimeiro() {
+		if(count==0)
+			throw new IllegalArgumentException("vazia");
+		return lista.getPrimeiro();
+	}
+	
+	public void enfileirar(T item) {
+		lista.inserirFim(item);
+		count++;
+	}
+	
+	public T desenfileirar() {
+		if(count==0)
+			throw new IllegalArgumentException("vazia");
+		T uwu =lista.getPrimeiro();
+		lista.removePrimeiro();
+		count--;
+		return uwu;
+		
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+public class Main {
+	public static void main(String[] args) throws ContainerCheioException, ContainerVazioException {
+		FilaArray fila1 = new FilaArray(4);
+		
+		Integer k =1;
+		Integer l =11;
+		Integer m =112;
+		
+		fila1.fazVazia();
+		System.out.println(fila1.estaVazia());
+		fila1.enfileirar(k);
+		System.out.println(fila1.getPrimeiro());
+		fila1.enfileirar(m);
+		System.out.println(fila1.getPrimeiro());
+		fila1.enfileirar(l);
+		System.out.println(fila1.getPrimeiro());
+		System.out.println(fila1.desenfileirar());
+		System.out.println(fila1.getPrimeiro());
+		System.out.println(fila1.desenfileirar());
+		System.out.println(fila1.getPrimeiro());
+		
+		System.out.println();
+		
+		FilaLista<Integer> fila2 = new FilaLista<Integer>();
+		
+		fila2.fazVazia();
+		System.out.println(fila2.estaVazia());
+		fila2.enfileirar(k);
+		System.out.println(fila2.getPrimeiro());
+		fila2.enfileirar(l);
+		System.out.println(fila2.getPrimeiro());
+		fila2.enfileirar(m);
+		System.out.println(fila2.getPrimeiro());
+		System.out.println(fila2.getPrimeiro());
+		System.out.println(fila2.desenfileirar());
+		System.out.println(fila2.getPrimeiro());
+		System.out.println(fila2.desenfileirar());
+		System.out.println(fila2.getPrimeiro());
+	}
+
+}
+
+
+
+
